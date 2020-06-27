@@ -67,11 +67,11 @@ We can count the number of cell lines and drugs in the data.
 
 ```{r count-uniq}
 ## with base R
-length(unique(summarizedData$cellLine))
-length(unique(summarizedData$drug))
+length(unique(summData$cellLine))
+length(unique(summData$drug))
 
 ## with the tidyverse
-summarizedData %>%
+summData %>%
     summarize(nCellLines = n_distinct(cellLine),
               nDrugs     = n_distinct(drug))
 ```

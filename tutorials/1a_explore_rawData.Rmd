@@ -67,11 +67,11 @@ Next, we can count the number of drugs and cell lines in the dataset.
 
 ```{r count-uniq}
 ## using base R
-length(unique(pharmacoData$cellLine))
-length(unique(pharmacoData$drug))
+length(unique(raw$cellLine))
+length(unique(raw$drug))
 
 ## with the tidyverse
-pharmacoData %>%
+raw %>%
     summarize(nCellLines = n_distinct(cellLine),
               nDrugs     = n_distinct(drug))
 ```
@@ -117,12 +117,12 @@ many data points are below 0 and above 100.
 
 ```{r viability-summaries}
 ## with base R
-range(pharmacoData$viability)
-sum(pharmacoData$viability < 0)
-sum(pharmacoData$viability > 100)
+#range(pharmacoData$viability)
+#sum(pharmacoData$viability < 0)
+#sum(pharmacoData$viability > 100)
 
 ## with the tidyverse
-pharmacoData %>%
+raw %>%
     summarize(min_viability = min(viability),
               max_viability = max(viability),
               n_too_small   = sum(viability < 0),
@@ -133,10 +133,9 @@ We can also compare the distribution of viability scores between
 the two studies using density plots.
 
 ```{r log-density, fig.width = 8, fig.height = 4, warning = FALSE}
-pharmacoData %>%
+raw %>%
     ggplot(aes(x = viability, group = study, fill = study, color = study)) +
     geom_density(alpha = 1/4) +
-    xlim(0, 170) +
     ggtitle("Distributions of viability scores by study")
 ```
 
@@ -150,7 +149,7 @@ stratified by the two studies. We highlight the region of the plot
 where viability scores should fall (between 0 and 100).
 
 ```{r viability-boxplots, fig.width = 8, fig.height = 4, warning = FALSE}
-gp <- pharmacoData %>%
+gp <- raw %>%
     ggplot(aes(y = viability, x = drug, fill = study)) +
     scale_x_discrete() + 
     annotate(geom = "rect", ymin = 0, ymax = 100, xmin = -Inf, xmax = Inf,

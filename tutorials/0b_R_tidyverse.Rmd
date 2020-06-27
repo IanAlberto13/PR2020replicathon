@@ -120,7 +120,7 @@ The `distinct` function is a quick way to just take the unique rows in a table. 
 The following returns the unique cell line and drug combinations in our data.
 
 ```{r}
-cldData <- distinct(pharmacoData, cellLine, drug)
+cldData <- pharmacoData %>% distinct(cellLine, drug)
 head(cldData)
 dim(cldData)
 ```
@@ -138,7 +138,7 @@ Now that we know how to subset columns, what about **adding** columns? This can 
 
 ```{r}
 pharmacoData %>%
-    dplyr::mutate(logConcentration = log2(concentration)) %>%
+    dplyr::mutate(concentration = log2(concentration)) %>%
     head()
 ```
 
@@ -168,7 +168,7 @@ Great!
 For the simple case of counting the occurrences of the unique values in a column, use `count`. The following example counts the number of rows in the table corresponding to each study.
 
 ```{r}
-count(pharmacoData, study)
+count(pharmacoData, cellLine)
 ```
 
 Interesting! It looks like we have slightly more data from the GDSC study.
